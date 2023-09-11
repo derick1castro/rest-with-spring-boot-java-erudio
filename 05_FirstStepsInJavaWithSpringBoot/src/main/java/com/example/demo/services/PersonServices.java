@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.data.vo.v1.PersonVO;
+import com.example.demo.data.vo.v2.PersonVOV2;
 import com.example.demo.execption.ResourceNotFoundException;
 import com.example.demo.mapper.DozerMapper;
+import com.example.demo.mapper.custom.PersonMapper;
 import com.example.demo.model.Person;
 import com.example.demo.repositories.PersonRepository;
 import com.example.demo.repositories.PersonRepository;
@@ -19,6 +21,9 @@ public class PersonServices {
 
     @Autowired
     PersonRepository personRepository;
+
+    @Autowired
+    PersonMapper personMapper;
 
     public List<PersonVO> findAll(){
         logger.info("Finding all people!");
@@ -37,6 +42,13 @@ public class PersonServices {
         logger.info("Creating one person");
         var entity = DozerMapper.parseObject(person, Person.class);
         var vo = DozerMapper.parseObject(personRepository.save(entity), PersonVO.class);
+        return vo;
+    }
+
+    public PersonVOV2 createV2(PersonVOV2 person) {
+        logger.info("Creating one person with V2!");
+        var entity = personMapper.convertVoToEntity(person);
+        var vo = personMapper.convertEntityToVo(personRepository.save(entity));
         return vo;
     }
 

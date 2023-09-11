@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.data.vo.v1.PersonVO;
+import com.example.demo.data.vo.v2.PersonVOV2;
 import com.example.demo.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -33,12 +34,21 @@ public class PersonController {
     public PersonVO create(@RequestBody PersonVO person) {
         return personServices.create(person);
     }
+
+    @PostMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public PersonVOV2 createV2(@RequestBody PersonVOV2 person) {
+        return personServices.createV2(person);
+    }
+
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public PersonVO update(@RequestBody PersonVO person) {
         return personServices.update(person);
     }
+
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<?> delete(@PathVariable(value = "id") Long id) {
         personServices.delete(id);
